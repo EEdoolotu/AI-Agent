@@ -1,5 +1,6 @@
 import os
 import subprocess
+from google.genai import types
 
 def run_python_file(working_directory, file_path, args=[]):
     full_path = os.path.join(working_directory, file_path)
@@ -52,3 +53,27 @@ def run_python_file(working_directory, file_path, args=[]):
 
     except Exception as e:
             return f"Error: {str(e)}" 
+
+
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description=(
+        "Execute a Python file (via `uv run`) from the working directory and return formatted stdout/stderr. "
+        "Paths must be relative to the working directory."
+    ),
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="Relative path to the Python file (must end with .py). Example: 'scripts/tool.py'.",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                description="Optional list of string arguments to pass to the script. Example: ['--verbose', '42']",
+                items=types.Schema(type=types.Type.STRING),
+            ),
+        },
+        required=["file_path"],
+    ),
+)
