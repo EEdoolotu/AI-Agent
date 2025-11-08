@@ -8,7 +8,7 @@ def run_python_file(working_directory, file_path, args=[]):
 
     try:
         if not absolute_full_path.startswith(absolute_working_path):
-            return f'Error: Cannot write to "{file_path}" as it is outside the permitted working directory'
+            return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
         elif not os.path.exists(absolute_full_path):
             return f'Error: File "{file_path}" not found.'
         elif not absolute_full_path.endswith(".py"):
@@ -40,9 +40,9 @@ def run_python_file(working_directory, file_path, args=[]):
                 parts.append(f"Process exited with code {result.returncode}.")
 
             if not parts:
-                return "Nno output produced."
+                return "No output produced."
 
-            return parts
+            return "\n".join(parts)
 
             
 
